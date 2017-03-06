@@ -4,10 +4,12 @@ import javax.imageio.ImageIO;
 
 public class DynamicObject extends GameObject {
 
-	int i = 0;
 	protected String state;
-	protected double verticalVelocity, horizontalVelocity;
-	protected final double VELOCITY_BOOST = 10;
+	protected static double verticalVelocity;
+	protected static double horizontalVelocity;
+	protected final static double HORIZONTAL_VELOCITY_BOOST = 3 * gPanel.SCALE;
+	protected final static double DOWN_VELOCITY_BOOST = 1 * gPanel.SCALE;
+	protected final static double UP_VELOCITY_BOOST = 5 * gPanel.SCALE;
 
 	public DynamicObject(int x, int y, int w, int h, String type) {
 		super(x, y, w, h, type);
@@ -21,31 +23,33 @@ public class DynamicObject extends GameObject {
 		}
 	}
 
-	public void left() {
-		horizontalVelocity -= VELOCITY_BOOST;
+	public static void left() {
+		if (!gPanel.leftPressed)
+			horizontalVelocity -= HORIZONTAL_VELOCITY_BOOST;
 	}
 
-	public void right() {
-		horizontalVelocity += VELOCITY_BOOST;
+	public static void right() {
+		if (!gPanel.rightPressed)
+			horizontalVelocity += HORIZONTAL_VELOCITY_BOOST;
 	}
 
-	public void down() {
-		verticalVelocity -= VELOCITY_BOOST;
+	public static void down() {
+		if (!gPanel.downPressed)
+			verticalVelocity -= DOWN_VELOCITY_BOOST;
 	}
 
-	public void up() {
-		verticalVelocity += VELOCITY_BOOST;
+	public static void up() {
+		if (!gPanel.upPressed)
+			verticalVelocity += UP_VELOCITY_BOOST;
 	}
 
 	public void tick() {
 		gravity();
 		move();
-		i++;
-		System.out.println(i);
 	}
 
 	public void gravity() {
-		verticalVelocity -= gMap.G * gPanel.DELTA_TIME * gPanel.SCALE;
+		verticalVelocity -= gMap.G * gPanel.DELTA_TIME;
 	}
 
 	public void move() {

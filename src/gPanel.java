@@ -16,6 +16,8 @@ public class gPanel extends JPanel {
 	private gMap m = new gMap();
 	public static final double DELTA_TIME = 1.0 / 30.0; // # seconds between ticks; 30 ticks/s
 	public static final double SCALE = 20; // 20 pixels = 1 meter
+	
+	public static boolean upPressed, downPressed, leftPressed, rightPressed;
 
 	public gPanel(Dimension d) {
 		this.dim = d;
@@ -25,6 +27,11 @@ public class gPanel extends JPanel {
 		makeMap();
 		setUpKeyMappings();
 		t.start();
+		
+		upPressed = false;
+		downPressed = false;
+		leftPressed = false;
+		rightPressed = false;
 	}
 
 	private void makeMap() {
@@ -38,55 +45,82 @@ public class gPanel extends JPanel {
 	}
 
 	private void setUpKeyMappings() {
-		this.getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "fly");
-		this.getActionMap().put("fly", new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		//		this.getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "fly");
+		//		this.getActionMap().put("fly", new AbstractAction() {
+		//			@Override
+		//			public void actionPerformed(ActionEvent e) {
+		//			}
+		//		});
+
 		this.getInputMap().put(KeyStroke.getKeyStroke("LEFT"), "left");
 		this.getActionMap().put("left", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//gMap.s.left();
+				DynamicObject.left();
+				leftPressed = true;
 			}
 		});
+
 		this.getInputMap().put(KeyStroke.getKeyStroke("RIGHT"), "right");
 		this.getActionMap().put("right", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//gMap.s.right();
+				DynamicObject.right();
+				rightPressed = true;
 			}
 		});
+
 		this.getInputMap().put(KeyStroke.getKeyStroke("DOWN"), "down");
 		this.getActionMap().put("down", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//gMap.s.down();
+				DynamicObject.down();
+				downPressed = true;
 			}
 		});
+
 		this.getInputMap().put(KeyStroke.getKeyStroke("UP"), "up");
 		this.getActionMap().put("up", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//gMap.s.up();
+				DynamicObject.up();
+				upPressed = true;
 			}
 		});
 
-		this.getInputMap().put(KeyStroke.getKeyStroke("released UP"), "stopVert");
-		this.getInputMap().put(KeyStroke.getKeyStroke("released DOWN"), "stopVert");
-		this.getActionMap().put("stopVert", new AbstractAction() {
+		this.getInputMap().put(KeyStroke.getKeyStroke("released UP"), "releaseUp");
+		this.getActionMap().put("releaseUp", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+
+				upPressed = false;
 			}
 		});
-		this.getInputMap().put(KeyStroke.getKeyStroke("released LEFT"), "stopHoriz");
-		this.getInputMap().put(KeyStroke.getKeyStroke("released RIGHT"), "stopHoriz");
-		this.getActionMap().put("stopHoriz", new AbstractAction() {
+
+		this.getInputMap().put(KeyStroke.getKeyStroke("released DOWN"), "releaseDown");
+		this.getActionMap().put("releaseDown", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				downPressed = false;
 			}
 		});
+
+		this.getInputMap().put(KeyStroke.getKeyStroke("released LEFT"), "releaseLeft");
+		this.getActionMap().put("releaseLeft", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				leftPressed = false;
+			}
+		});
+		
+		this.getInputMap().put(KeyStroke.getKeyStroke("released RIGHT"), "releaseRight");
+		this.getActionMap().put("releaseRight", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				rightPressed = false;
+			}
+		});
+
 		this.requestFocusInWindow();
 	}
 

@@ -6,7 +6,7 @@ public class gMap {
 
 	protected List<GameObject> gameObjects;
 	protected DynamicObject s;
-	static final double G = 9.8;
+	static final double G = 9.8 * gPanel.SCALE;
 
 	public gMap() {
 		gameObjects = new ArrayList<GameObject>();
