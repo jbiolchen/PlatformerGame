@@ -19,18 +19,12 @@ public class gMap {
 		largePlatform = new StaticObject(0, 200, 150, 150, "large");
 		gameObjects.add(player);
 		gameObjects.add(largePlatform);
-
 	}
 
 	public void tick() {
 		for (GameObject go : gameObjects)
 			go.tick();
 		collision();
-	}
-
-	public void draw(Graphics g) {
-		for (GameObject go : gameObjects)
-			go.draw(g);
 	}
 
 	public void collision() {
