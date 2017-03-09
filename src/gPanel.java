@@ -16,7 +16,7 @@ public class gPanel extends JPanel {
 	private gMap m = new gMap();
 	public static final double DELTA_TIME = 1.0 / 30.0; // # seconds between ticks; 30 ticks/s
 	public static final double SCALE = 20; // 20 pixels = 1 meter
-	
+
 	public static boolean upPressed, downPressed, leftPressed, rightPressed;
 
 	public gPanel(Dimension d) {
@@ -27,7 +27,7 @@ public class gPanel extends JPanel {
 		makeMap();
 		setUpKeyMappings();
 		t.start();
-		
+
 		upPressed = false;
 		downPressed = false;
 		leftPressed = false;
@@ -56,7 +56,7 @@ public class gPanel extends JPanel {
 		this.getActionMap().put("left", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				DynamicObject.left();
+				gMap.heroLeft();
 				leftPressed = true;
 			}
 		});
@@ -65,7 +65,7 @@ public class gPanel extends JPanel {
 		this.getActionMap().put("right", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				DynamicObject.right();
+				gMap.heroRight();
 				rightPressed = true;
 			}
 		});
@@ -74,7 +74,7 @@ public class gPanel extends JPanel {
 		this.getActionMap().put("down", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				DynamicObject.down();
+				gMap.heroDown();
 				downPressed = true;
 			}
 		});
@@ -83,7 +83,7 @@ public class gPanel extends JPanel {
 		this.getActionMap().put("up", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				DynamicObject.up();
+				gMap.heroUp();
 				upPressed = true;
 			}
 		});
@@ -92,7 +92,6 @@ public class gPanel extends JPanel {
 		this.getActionMap().put("releaseUp", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
 				upPressed = false;
 			}
 		});
@@ -112,7 +111,7 @@ public class gPanel extends JPanel {
 				leftPressed = false;
 			}
 		});
-		
+
 		this.getInputMap().put(KeyStroke.getKeyStroke("released RIGHT"), "releaseRight");
 		this.getActionMap().put("releaseRight", new AbstractAction() {
 			@Override
