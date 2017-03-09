@@ -16,13 +16,21 @@ public class gMap {
 	}
 
 	public void tick() {
-		for (GameObject go : gameObjects)
-			go.tick();
+		List<GameObject> draw = new ArrayList<GameObject>();
+		draw = location();
+		for(int i = 0; i<draw.size(); i++) {
+			draw.get(i).draw(g);
+		}
 	}
-
-	public void draw(Graphics g) {
-		for (GameObject go : gameObjects)
-			go.draw(g);
+	public ArrayList<GameObject> location(){
+		ArrayList<GameObject> draw = new ArrayList<GameObject>();
+		for(int i = 0; i<gameObjects.size(); i++) {
+			if((gameObjects.get(i).getX() <= h.getX()-400 || gameObjects.get(i).getX() >= h.getX()-400) && (gameObjects.get(i).getY() >= h.getY()-300 || gameObjects.get(i).getY() <= h.getY()-300)) {
+				draw.add(gameObjects.get(i));
+			}
+			else { }
+		}
+		return draw;
 	}
 
 }
