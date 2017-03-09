@@ -4,33 +4,70 @@ import java.util.List;
 
 public class gMap {
 
-	protected List<GameObject> gameObjects;
-	protected DynamicObject s;
+	protected static List<GameObject> gameObjects;
+	protected DynamicObject player;
+	protected StaticObject largePlatform;
 	static final double G = 9.8 * gPanel.SCALE;
+
+	protected final static double HORIZONTAL_VELOCITY_BOOST = 3 * gPanel.SCALE;
+	protected final static double DOWN_VELOCITY_BOOST = 1 * gPanel.SCALE;
+	protected final static double UP_VELOCITY_BOOST = 8 * gPanel.SCALE;
 
 	public gMap() {
 		gameObjects = new ArrayList<GameObject>();
-		s = new DynamicObject(0, -56, 150, 150, "large");
-		gameObjects.add(s);
-
+		player = new Hero(0, 0, 50, 50, "player");
+		largePlatform = new StaticObject(0, 200, 150, 150, "large");
+		gameObjects.add(player);
+		gameObjects.add(largePlatform);
 	}
 
 	public void tick() {
-		List<GameObject> draw = new ArrayList<GameObject>();
-		draw = location();
-		for(int i = 0; i<draw.size(); i++) {
-			draw.get(i).draw(g);
+		for (GameObject go : gameObjects)
+			go.tick();
+		collision();
+	}
+
+	public void collision() {
+		for (int i = 0; i < gameObjects.size(); i++) {
+			for (int j = i + 1; j < gameObjects.size(); j++) {
+				if (gameObjects.get(i).getBoundingRect().intersects(gameObjects.get(j).getBoundingRect())) {
+					gameObjects.get(i).onCollision(gameObjects.get(j));
+					gameObjects.get(j).onCollision(gameObjects.get(i));
+				}
+			}
 		}
 	}
-	public ArrayList<GameObject> location(){
-		ArrayList<GameObject> draw = new ArrayList<GameObject>();
-		for(int i = 0; i<gameObjects.size(); i++) {
-			if((gameObjects.get(i).getX() <= h.getX()-400 || gameObjects.get(i).getX() >= h.getX()-400) && (gameObjects.get(i).getY() >= h.getY()-300 || gameObjects.get(i).getY() <= h.getY()-300)) {
-				draw.add(gameObjects.get(i));
+
+	public static void heroLeft() { // equivalent of moving Hero left
+		if (!gPanel.leftPressed)
+			for (GameObject go : gameObjects) {
+				if (!(go instanceof Hero))
+					go.setHorizontalVelocity(-HORIZONTAL_VELOCITY_BOOST);
 			}
-			else { }
-		}
-		return draw;
+	}
+
+	public static void heroRight() {
+		if (!gPanel.rightPressed)
+			for (GameObject go : gameObjects) {
+				if (!(go instanceof Hero))
+					go.setHorizontalVelocity(HORIZONTAL_VELOCITY_BOOST);
+			}
+	}
+
+	public static void heroDown() {
+		if (!gPanel.downPressed)
+			for (GameObject go : gameObjects) {
+				if (!(go instanceof Hero))
+					go.setVerticalVelocity(-DOWN_VELOCITY_BOOST);
+			}
+	}
+
+	public static void heroUp() {
+		if (!gPanel.upPressed)
+			for (GameObject go : gameObjects) {
+				if (!(go instanceof Hero))
+					go.setVerticalVelocity(UP_VELOCITY_BOOST);
+			}
 	}
 
 }

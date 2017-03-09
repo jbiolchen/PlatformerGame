@@ -25,4 +25,8 @@ public class StaticObject extends GameObject {
 
 	public void tick() { // intentionally blank
 	} // can be used for animations
+	
+	public void onCollision(GameObject go){
+		// to be completed later
+	}
 }
